@@ -1,0 +1,189 @@
+<div class="wrapper">
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1>{{username}}'s Report</h1>
+          </div>
+        </div>
+      </div><!-- /.container-fluid -->
+    </section>
+    <div class="row">
+      <div class="col-12">
+        <div class="card-Border">
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title">
+                <div class="form-group">
+                  <div class="btn-group w-100">
+                    <label style="width: 60%;">View By :</label>
+                    <div style="width: 1em;"></div>
+                    <select (change)='Search()' [(ngModel)]=SelectType class="form-control " style="width: 100%;">
+                      <option value="All">All</option>
+                      <option value="Week">Week</option>
+                      <option selected="selected" value="LastMonth">Last Month</option>
+                      <option value="Month">Month</option>
+                      <option value="Year">Year</option>
+                    </select>
+                    <!-- Date -->
+                    <div class="form-group">
+
+                      <!-- /.input group -->
+                      <mat-form-field [hidden]=hideWeek>
+                        <mat-date-range-input [formGroup]="campaignOne" [rangePicker]="campaignOnePicker">
+                          <input matStartDate formControlName="start">
+                          <input matEndDate (dateChange)="getbyWeek()" formControlName="end">
+                        </mat-date-range-input>
+                        <mat-datepicker-toggle matSuffix [for]="campaignOnePicker">
+                        </mat-datepicker-toggle>
+                        <mat-date-range-picker #campaignOnePicker></mat-date-range-picker>
+                      </mat-form-field>
+                      <!-- month  -->
+                      <mat-form-field [hidden]=hideMonth>
+                        <input matInput [matDatepicker]="dp" [formControl]="date">
+                        <mat-datepicker-toggle matSuffix [for]="dp"></mat-datepicker-toggle>
+                        <mat-datepicker #dp startView="multi-year" (yearSelected)="chosenYearHandler($event)"
+                          (monthSelected)="chosenMonthHandler($event, dp)" panelClass="example-month-picker">
+                        </mat-datepicker>
+                      </mat-form-field>
+                      <!-- Year -->
+                      <mat-form-field [hidden]=hideYear>
+                        <input matInput [matDatepicker]="yr" [formControl]="Year">
+                        <mat-datepicker-toggle matSuffix [for]="yr"></mat-datepicker-toggle>
+                        <mat-datepicker #yr startView="multi-year" (yearSelected)="chosenOnlyYearHandler($event,yr)"
+                          panelClass="example-month-picker">
+                        </mat-datepicker>
+                      </mat-form-field>
+
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="card-tools">
+                <div class="input-group input-group-sm" style="width: 170px;margin-left:15px;">
+                  <button (click)="exportexcel()" data-toggle="modal" data-target="#modal-projectCreation" type="button"
+                    class="btn btn-primary btn-block"><i class="fa fa-print" aria-hidden="true"
+                      style="margin-right: 1em;"></i>Export to excel
+                  </button>
+                </div>
+              </div>
+              <div class="card-tools">
+                <div class="input-group input-group-sm" style="width: 50px">
+                  <input class="btn btn-primary btn-block" type="text" [value]=totalWorkingHrs disabled>
+                </div>
+              </div>
+              <div class="card-tools">
+                <div class="input-group input-group-sm" style="width: 180px">
+                  <label class="btn btn-block" for="">Total Working Hrs :</label>
+                </div>
+              </div>
+            </div>
+
+            <table class="table table-hover text-nowrap" id="excel-table">
+              <thead>
+                <tr>
+                  <th style="width: 8%" class="text-center">
+                    Status
+                  </th>
+                  <th class="text-center" style="width: 15%">
+                    Project Name
+                  </th>
+                  <th class="text-center" style="width: 10%">
+                    Activity
+                  </th>
+                  <th class="text-center" style="width: 10%">
+                    Time Type
+                  </th>
+                  <!-- <th class="text-center">
+                    Employee Name
+                  </th> -->
+                  <th class="text-center">
+                    working Hrs
+                  </th>
+                  <th class="text-center">
+                    Week Start Date
+                  </th>
+
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let obj of timeClock">
+                  <td *ngIf="obj.status === 'Submited'; else elseBlock" class="text-center">
+                    <span class="badge badge-primary">{{obj.status}}</span>
+                  </td>
+                  <ng-template #elseBlock>
+                    <td *ngIf="obj.status === 'Approved'; else elseBlock" class="text-center">
+                      <span class="badge badge-success">{{obj.status}}</span>
+                    </td>
+                    <ng-template #elseBlock>
+                      <td *ngIf="obj.status === 'Draft'; else elseBlock" class="text-center">
+                        <span class="badge badge-secondary">{{obj.status}}</span>
+                      </td>
+                      <ng-template #elseBlock>
+                        <td *ngIf="obj.status === 'Created'; else elseBlock" class="text-center">
+                          <span class="badge badge-warning">{{obj.status}}</span>
+                        </td>
+                        <ng-template #elseBlock>
+                          <td class="text-center">
+                            <span class="badge badge-danger">{{obj.status}}</span>
+                          </td>
+                        </ng-template>
+                      </ng-template>
+                    </ng-template>
+                  </ng-template>
+                  <td class="text-center">
+                    <a>
+                      {{obj.projectCode}}
+                    </a>
+                    <br />
+                    <small>
+                      Xilontech
+                    </small>
+                  </td>
+                  <td class="text-center">
+                    <a>
+                      {{obj.activitiesCode}}
+                    </a>
+                  </td>
+                  <td class="text-center">
+                    <a>
+                      {{obj.timeType}}
+                    </a>
+                  </td>
+                  <!-- <td class="text-center">
+                    <a>
+                      {{obj.user}}
+                    </a>
+                  </td> -->
+                  <td class="text-center">
+                    <a>
+                      {{obj.totalworkinghour}}
+                    </a>
+                  </td>
+                  <td class="text-center">
+                    <a>
+                      {{obj.date}}
+                    </a>
+                  </td>
+                  <td class="text-right py-0 align-middle">
+                    <!-- <div>
+                      <div class="btn-group btn-group-sm">
+                        <a class="btn btn-info" style="color: white;" (click)=approve(obj)><i
+                            class="fas fa-check-circle"></i></a>
+                        <a class="btn btn-danger" style="color: white;" (click)=reject(obj)><i
+                            class="fas fa-times"></i></a>
+                      </div>
+                    </div> -->
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

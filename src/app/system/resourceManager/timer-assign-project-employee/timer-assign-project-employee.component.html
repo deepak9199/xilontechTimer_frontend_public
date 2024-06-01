@@ -1,0 +1,178 @@
+<div class="wrapper">
+    <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <section class="content-header">
+            <div class="container-fluid">
+                <div class="row mb-2">
+                    <div class="col-sm-6">
+                        <h1>{{username}}'s Allocation</h1>
+                    </div>
+                </div>
+            </div><!-- /.container-fluid -->
+        </section>
+        <div class="row">
+            <div class="col-12">
+                <div class="card-Border">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">
+                                <div class="form-group">
+                                    <div class="btn-group w-100">
+                                        <!-- <label style="width: 60%;">View By:</label>
+                                        <div style="width: 1em;"></div>
+                                        <select class="form-control " style="width: 100%;">
+                                            <option selected="selected">Android</option>
+                                            <option>Greens</option>
+                                            <option>Xilon Portal</option>
+                                        </select> -->
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-tools">
+                                <div class="input-group input-group-sm" style="width: 170px">
+                                    <button data-toggle="modal" data-target="#modal-projectCreation" type="button"
+                                        class="btn btn-primary btn-block"><i class="fas fa-plus"
+                                            style="margin-right: 1em;"></i>Assine Project
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /.card-header -->
+                        <div class="card-body p-0">
+                            <table class="table table-striped projects">
+                                <thead>
+                                    <tr>
+                                        <!-- <th style="width: 1%">
+                                            <div class="custom-control custom-checkbox">
+                                                <input class="custom-control-input" type="checkbox" id="customCheckbox1"
+                                                    value="option1" (change)="checkAll(this)">
+                                                <label for="customCheckbox1" class="custom-control-label"></label>
+                                            </div>
+                                        </th> -->
+                                        <th style="width: 15%">
+                                            Project Name
+                                        </th>
+                                        <th style="width: 10%">
+                                            Activities
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let obj of assignManagerList">
+                                        <!-- <td>
+                                            <div class="custom-control custom-checkbox">
+                                                <input class="custom-control-input" type="checkbox" id="customCheckbox2"
+                                                    value="option2">
+                                                <label for="customCheckbox2" class="custom-control-label"></label>
+                                            </div>
+                                        </td> -->
+                                        <td>
+                                            <a>
+                                                {{obj.projects}}
+                                            </a>
+                                            <br />
+                                            <small>
+                                                Xilontech
+                                            </small>
+                                        </td>
+                                        <td>
+                                            <a [hidden]='obj.activities1==null'>
+                                                <input class="form-check-input" type="checkbox" 
+                                                    [value]="obj.activities1" [checked]=obj.activities1Select (change)="addActivity(obj.projects,obj.activities1,obj.activities1Id,$event)">
+                                                {{obj.activities1}}
+                                            </a>
+                                        </td>
+                                        <td>
+                                            <a [hidden]='obj.activities2==null'>
+                                                <input class="form-check-input" type="checkbox" 
+                                                    [value]="obj.activities2" [checked]=obj.activities2Select (change)="addActivity(obj.projects,obj.activities2,obj.activities2Id,$event)">
+                                                {{obj.activities2}}
+                                            </a>
+                                        </td>
+                                        <td>
+                                            <a [hidden]='obj.activities3==null'>
+                                                <input class="form-check-input" type="checkbox" 
+                                                    [value]="obj.activities3" [checked]=obj.activities3Select (change)="addActivity(obj.projects,obj.activities3,obj.activities3Id,$event)">
+                                                {{obj.activities3}}
+                                            </a>
+                                        </td>
+                                        <td>
+                                            <a [hidden]='obj.activities4==null'>
+                                                <input class="form-check-input" type="checkbox" 
+                                                    [value]="obj.activities4" [checked]=obj.activities4Select (change)="addActivity(obj.projects,obj.activities4,obj.activities4Id,$event)">
+                                                {{obj.activities4}}
+                                            </a>
+                                        </td>
+                                        <td>
+                                            <a [hidden]='obj.activities5==null'>
+                                                <input class="form-check-input" type="checkbox" 
+                                                    [value]="obj.activities5" [checked]=obj.activities5Select (change)="addActivity(obj.projects,obj.activities5,obj.activities5Id,$event)">
+                                                {{obj.activities5}}
+                                            </a>
+                                        </td>
+                                        <td class="project-actions text-right">
+                                            <a (click)=deletePoj(obj) style="margin-right: 1em;">
+                                                <i class="fas fa-trash">
+                                                </i>
+                                            </a>
+                                        </td>
+                                    </tr>
+
+
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal-projectCreation">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <!-- <div class="modal-header"> -->
+            <!-- <div class="modal-body"> -->
+            <!-- general form elements -->
+            <div class="card card-primary">
+                <div class="card-header">
+                    <h3 class="card-title">Create a Projects</h3>
+                    <button id="cancel" type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <!-- /.card-header -->
+                <!-- form start -->
+                <form name="form" #myNgForm="ngForm" (ngSubmit)="add();myNgForm.resetForm()">
+                    <div class="card-body">
+                        <div class="form-group">
+                            <label for="projectCode">Select Project</label>
+
+
+                            <select class="form-control" id="projectCode" name="projectCode"
+                                placeholder="Enter The projectCode" [(ngModel)]="form.projectCode" required>
+                                <option *ngFor="let project of projectlist" value={{project.projectCode}}>
+                                    {{project.projectname}}
+                                </option>
+
+
+                            </select>
+                        </div>
+
+                    </div>
+                    <!-- /.card-body -->
+
+                    <div class="card-footer">
+                        <button type="submit" class="btn btn-primary">Assine</button>
+                    </div>
+                </form>
+            </div>
+            <!-- /.card -->
+
+            <!-- </div> -->
+            <!-- </div> -->
+        </div>
+    </div>
+</div>

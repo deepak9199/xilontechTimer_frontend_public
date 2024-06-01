@@ -1,0 +1,63 @@
+<aside class="main-sidebar sidebar-dark-primary elevation-4">
+    <!-- Brand Logo -->
+    <a class="brand-link">
+        <img src="assets/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
+            style="opacity: .8">
+        <span class="brand-text font-weight-light">Timer</span>
+    </a>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <!-- Sidebar Menu -->
+        <nav class="mt-2">
+            <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                <!-- Add icons to the links using the .nav-icon class
+             with font-awesome or any other icon font library -->
+                <!-- <li class="nav-header">USERS</li> -->
+                <li class="nav-item">
+                    <a [routerLink]="['timeclock']" class="nav-link">
+                        <i class="fas fa-stopwatch fa-fw"></i>
+                        <p style="margin-left: 1em;">Time Clock</p>
+                    </a>
+                </li>
+                <li *ngIf="role==='ROLE_ADMIN'" class="nav-header">ADMIN PANEL</li>
+                <li *ngIf="role==='ROLE_ADMIN'" class="nav-item">
+                    <a [routerLink]="['timeCLockApprove']" class="nav-link">
+                        <i class="fas fa-pen-square fa-fw"></i>
+                        <p style="margin-left: 1em;">Time Approve</p>
+                    </a>
+                </li>
+                <li *ngIf="role==='ROLE_ADMIN'" class="nav-item">
+                    <a [routerLink]="['costcenter']" class="nav-link">
+                        <i class="fas fa-chart-bar fa-fw"></i>
+                        <p style="margin-left: 1em;">Cost Center</p>
+                    </a>
+                </li>
+                <li *ngIf="role==='ROLE_ADMIN'" class="nav-item">
+                    <a [routerLink]="['projects']" class="nav-link">
+                        <i class="fas fa-code fa-fw"></i>
+                        <p style="margin-left: 1em;">Projects</p>
+                    </a>
+                </li>
+                <li *ngIf="role==='ROLE_ADMIN'" class="nav-item">
+                    <a [routerLink]="['activities']" class="nav-link">
+                        <i class="fas fa-code-branch fa-fw"></i>
+                        <p style="margin-left: 1em;">Activities</p>
+                    </a>
+                </li>
+                <li *ngIf="role==='ROLE_ADMIN'" class="nav-item">
+                    <a [routerLink]="['resourceManager']" class="nav-link">
+                        <i class="fas fa-stopwatch fa-fw"></i>
+                        <p style="margin-left: 1em;">Allocation</p>
+                    </a>
+                </li>
+                <li *ngIf="role==='ROLE_ADMIN'" class="nav-item">
+                    <a [routerLink]="['report']" class="nav-link">
+                        <i class="fas fa-book-open fa-fw"></i>
+                        <p style="margin-left: 1em;">Report</p>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</aside>

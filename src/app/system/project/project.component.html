@@ -1,0 +1,122 @@
+<div class="wrapper">
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1>Projects</h1>
+          </div>
+        </div>
+      </div>
+      <!-- /.container-fluid -->
+    </section>
+    <!-- /below the containts -->
+
+    <div class="row">
+      <div class="col-12">
+        <div class="card-Border">
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title">List Of Projects</h3>
+
+              <div class="card-tools">
+                <div class="input-group input-group-sm" style="width: 170px">
+                  <div *ngIf='isadmin'>
+                    <button data-toggle="modal" data-target="#modal-createprojectss" type="button"
+                      class="btn btn-default" style="background-color: #007bff;color: cornsilk;">Create Projects
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <table class="table table-hover text-nowrap" id="excel-table">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>project Name</th>
+                  <th>project Code</th>
+                  <th>project Description</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let poj of timeproject">
+                  <td>{{poj.id}}</td>
+                  <td>{{poj.projectname}}</td>
+                  <td>{{poj.projectCode}}</td>
+                  <td>{{poj.projectDescription}}</td>
+
+                  <td class="text-right py-0 align-middle">
+                    <div *ngIf='isadmin'>
+                      <div class="btn-group btn-group-sm">
+                        <a class="btn btn-danger" style="color: white;" (click)=DeleteProject(poj)><i
+                            class="fas fa-trash"></i></a>
+                      </div>
+                    </div>
+                  </td>
+
+                </tr>
+
+
+              </tbody>
+            </table>
+
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+
+  </div>
+</div>
+
+<div class="modal fade" id="modal-createprojectss">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <!-- <div class="modal-header"> -->
+      <!-- <div class="modal-body"> -->
+      <!-- general form elements -->
+      <div class="card card-primary">
+        <div class="card-header">
+          <h3 class="card-title">Create a Projects</h3>
+          <button id="cancel" type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <!-- /.card-header -->
+        <!-- form start -->
+        <form name="form" #myNgForm="ngForm" (ngSubmit)="add();myNgForm.resetForm()">
+          <div class="card-body">
+            <div class="form-group">
+              <label for="projectCode">Projects Code</label>
+              <input type="text" class="form-control" id="projectCode" name="projectCode"
+                placeholder="Enter The projectCode" [(ngModel)]="form.projectCode">
+            </div>
+            <div class="form-group">
+              <label for="projectname">Projects Name</label>
+              <input type="text" class="form-control" id="projectname" name="projectname"
+                placeholder="Enter The projectname" [(ngModel)]="form.projectname" required #projectname="ngModel">
+            </div>
+            <div class="form-group">
+              <label for="projectDescription">Projects Description</label>
+              <input type="text" class="form-control" id="projectDescription" name="activitiesDescription"
+                placeholder="Enter The projectDescription" [(ngModel)]="form.projectDescription" required
+                #projectDescription="ngModel">
+            </div>
+          </div>
+          <!-- /.card-body -->
+
+          <div class="card-footer">
+            <button type="submit" class="btn btn-primary">Submit</button>
+          </div>
+        </form>
+      </div>
+      <!-- /.card -->
+
+      <!-- </div> -->
+      <!-- </div> -->
+    </div>
+  </div>
+</div>

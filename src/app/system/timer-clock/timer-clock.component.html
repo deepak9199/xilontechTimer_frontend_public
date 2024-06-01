@@ -1,0 +1,306 @@
+<div class="wrapper">
+    <div class="content-wrapper">
+        <section class="content-header">
+            <div class="container-fluid">
+                <div class="row mb-2">
+                    <div class="col-sm-6">
+                        <h1>Time Clock</h1>
+                    </div>
+                </div>
+            </div><!-- /.container-fluid -->
+        </section>
+        <div class="row">
+            <div class="col-12">
+                <div class="card-Border">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="card-title">
+                                <!-- Date -->
+                                <div class="form-group">
+                                    <mat-form-field class="example-form-field" appearance="fill">
+                                        <mat-label>Select date</mat-label>
+                                        <mat-date-range-input [formGroup]="campaignOne"
+                                            [rangePicker]="campaignOnePicker">
+                                            <input matStartDate placeholder="Start date" formControlName="start">
+                                            <input matEndDate placeholder="End date" (dateChange)="gettimeclock()"
+                                                formControlName="end">
+                                        </mat-date-range-input>
+                                        <mat-datepicker-toggle matSuffix [for]="campaignOnePicker">
+                                        </mat-datepicker-toggle>
+                                        <mat-date-range-picker #campaignOnePicker></mat-date-range-picker>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <div class="card-tools">
+                                <div *ngIf="!timeClockstatus" class="input-group input-group-sm">
+                                    <button (click)="submittimesheet()" type="button"
+                                        class="btn btn-primary btn-block">Submit
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="card-tools" style="margin-right: 12px">
+                                <div *ngIf="!timeClockstatus" class="input-group input-group-sm">
+                                    <button (click)="Drafttimesheet()" type="button"
+                                        class="btn btn-primary btn-block">Save
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="card-tools" style="margin-right: 12px">
+                                <div *ngIf="!timeClockstatus" class="input-group input-group-sm">
+                                    <button data-toggle="modal" data-target="#modal-timecreation" type="button"
+                                        class="btn btn-primary btn-block"><i class="fas fa-plus"
+                                            style="margin-right: 1em;"></i>Add Time
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="card-tools">
+                                <div *ngIf="timeClockstatus" class="input-group input-group-sm" style="width: 150px">
+                                    <div *ngFor='let obj of timeClockstatusData;let i = index'>
+                                        <input *ngIf="obj.status === 'Submited' && i==0; else elseBlock"
+                                            class="btn btn-primary btn-block" type="text" value="Submited" disabled>
+                                        <ng-template #elseBlock>
+                                            <input *ngIf="obj.status === 'Approved' && i==0" class="btn btn-success btn-block"
+                                                type="text" value="Approved" disabled>
+                                        </ng-template>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /.card-header -->
+                        <div class="card-body p-0">
+                            <table class="table table-striped projects">
+                                <thead>
+                                    <tr>
+                                        <!-- <th style="width: 1%">
+                                            <div class="custom-control custom-checkbox">
+                                                <input class="custom-control-input" type="checkbox" id="customCheckbox1"
+                                                    value="option1" (change)="checkAll(this)">
+                                                <label for="customCheckbox1" class="custom-control-label"></label>
+                                            </div>
+                                        </th> -->
+                                        <th style="width: 8%" class="text-center">
+                                            Status
+                                        </th>
+                                        <th style="width: 15%">
+                                            Project Name
+                                        </th>
+                                        <th style="width: 10%">
+                                            Activity
+                                        </th>
+                                        <th style="width: 10%">
+                                            Time Type
+                                        </th>
+                                        <th class="col-0">
+                                            Mon
+                                        </th>
+                                        <th class="col-0">
+                                            Tue
+                                        </th>
+                                        <th class="col-0">
+                                            Wed
+                                        </th>
+                                        <th class="col-0">
+                                            Thur
+                                        </th>
+                                        <th class="col-0">
+                                            Fri
+                                        </th>
+                                        <th class="col-0">
+                                            Sat
+                                        </th>
+                                        <th class="col-0">
+                                            Sun
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let obj of timeClocklist">
+                                        <!-- <td>
+                                            <div class="custom-control custom-checkbox">
+                                                <input class="custom-control-input" type="checkbox" id="customCheckbox2"
+                                                    value="option2">
+                                                <label for="customCheckbox2" class="custom-control-label"></label>
+                                            </div>
+                                        </td> -->
+                                        <td *ngIf="obj.status === 'Submited'; else elseBlock" class="text-center">
+                                            <span class="badge badge-primary">{{obj.status}}</span>
+                                        </td>
+                                        <ng-template #elseBlock>
+                                            <td *ngIf="obj.status === 'Approved'; else elseBlock" class="text-center">
+                                                <span class="badge badge-success">{{obj.status}}</span>
+                                            </td>
+                                            <ng-template #elseBlock>
+                                                <td *ngIf="obj.status === 'Draft'; else elseBlock" class="text-center">
+                                                    <span class="badge badge-secondary">{{obj.status}}</span>
+                                                </td>
+                                                <ng-template #elseBlock>
+                                                    <td *ngIf="obj.status === 'Created'; else elseBlock"
+                                                        class="text-center">
+                                                        <span class="badge badge-warning">{{obj.status}}</span>
+                                                    </td>
+                                                    <ng-template #elseBlock>
+                                                        <td class="text-center">
+                                                            <span class="badge badge-danger">{{obj.status}}</span>
+                                                        </td>
+                                                    </ng-template>
+                                                </ng-template>
+                                            </ng-template>
+                                        </ng-template>
+                                        <td>
+                                            <a>
+                                                {{obj.projectCode}}
+                                            </a>
+                                            <br />
+                                            <small>
+                                                Xilontech
+                                            </small>
+                                        </td>
+                                        <td>
+                                            <a>
+                                                {{obj.activitiesCode}}
+                                            </a>
+                                        </td>
+                                        <td>
+                                            <a>
+                                                {{obj.timeType}}
+                                            </a>
+                                        </td>
+                                        <td>
+                                            <a class="col-0">
+                                                <input type="text" class="form-control" id="inputmon" name="inputmon"
+                                                    (keyup)='updateArrayItem(inputmon.value,inputtue.value,inputwed.value,inputthu.value,inputfri.value,inputsat.value,inputsun.value,obj)'
+                                                    placeholder="Hrs" value="{{obj.mon}}"
+                                                    [disabled]="obj.status=='Submited'|| obj.status=='Approved'"
+                                                    #inputmon required>
+                                            </a>
+                                        </td>
+                                        <td>
+                                            <a class="col-0">
+                                                <input type="text" class="form-control" id="inputtue" name="inputtue"
+                                                    (keyup)='updateArrayItem(inputmon.value,inputtue.value,inputwed.value,inputthu.value,inputfri.value,inputsat.value,inputsun.value,obj)'
+                                                    placeholder="Hrs" value="{{obj.tue}}"
+                                                    [disabled]="obj.status=='Submited' || obj.status=='Approved'"
+                                                    #inputtue required>
+                                            </a>
+                                        </td>
+                                        <td>
+                                            <a class="col-0">
+                                                <input type="text" class="form-control" id="inputwed" name="inputwed"
+                                                    (keyup)='updateArrayItem(inputmon.value,inputtue.value,inputwed.value,inputthu.value,inputfri.value,inputsat.value,inputsun.value,obj)'
+                                                    placeholder="Hrs" value="{{obj.wed}}"
+                                                    [disabled]="obj.status=='Submited' || obj.status=='Approved'"
+                                                    #inputwed required>
+                                            </a>
+                                        </td>
+                                        <td>
+                                            <a class="col-0">
+                                                <input type="text" class="form-control" id="inputthu" name="inputthu"
+                                                    (keyup)='updateArrayItem(inputmon.value,inputtue.value,inputwed.value,inputthu.value,inputfri.value,inputsat.value,inputsun.value,obj)'
+                                                    placeholder="Hrs" value="{{obj.thu}}"
+                                                    [disabled]="obj.status=='Submited' || obj.status=='Approved'"
+                                                    #inputthu required>
+                                            </a>
+                                        </td>
+                                        <td>
+                                            <a class="col-0">
+                                                <input type="text" class="form-control" id="inputfri" name="inputfri"
+                                                    (keyup)='updateArrayItem(inputmon.value,inputtue.value,inputwed.value,inputthu.value,inputfri.value,inputsat.value,inputsun.value,obj)'
+                                                    placeholder="Hrs" value="{{obj.fri}}"
+                                                    [disabled]="obj.status=='Submited' || obj.status=='Approved'"
+                                                    #inputfri required>
+                                            </a>
+                                        </td>
+                                        <td>
+                                            <a class="col-0">
+                                                <input type="text" class="form-control" id="inputsat" name="inputsat"
+                                                    (keyup)='updateArrayItem(inputmon.value,inputtue.value,inputwed.value,inputthu.value,inputfri.value,inputsat.value,inputsun.value,obj)'
+                                                    placeholder="Hrs" value="{{obj.sat}}"
+                                                    [disabled]="obj.status=='Submited' || obj.status=='Approved'"
+                                                    #inputsat required>
+                                            </a>
+                                        </td>
+                                        <td>
+                                            <a class="col-0">
+                                                <input type="text" class="form-control" id="inputsun" name="inputsun"
+                                                    (keyup)='updateArrayItem(inputmon.value,inputtue.value,inputwed.value,inputthu.value,inputfri.value,inputsat.value,inputsun.value,obj)'
+                                                    placeholder="Hrs" value="{{obj.sun}}"
+                                                    [disabled]="obj.status=='Submited' || obj.status=='Approved'"
+                                                    #inputsun required>
+                                            </a>
+                                        </td>
+                                        <td *ngIf="!timeClockstatus" class="project-actions text-right">
+                                            <!-- <a style="margin-right: 1em;"
+                                                (click)='updateArrayItem(inputmon.value,inputtue.value,inputwed.value,inputthu.value,inputfri.value,inputsat.value,inputsun.value,obj)'>
+                                                <i class="fas fa-paper-plane">
+                                                </i>
+                                            </a> -->
+                                            <a style="margin-right: 1em;" (click)='delete(obj)'>
+                                                <i class="fas fa-trash">
+                                                </i>
+                                            </a>
+                                        </td>
+                                    </tr>
+
+
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+</div>
+<div class="modal fade" id="modal-timecreation">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="card card-primary">
+                <div class="card-header">
+                    <h3 class="card-title">Create New Time</h3>
+                    <button id="cancel" type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <form name="formAddTime" #myNgForm="ngForm" (ngSubmit)="createTimes();myNgForm.resetForm()">
+                    <div class="card-body">
+                        <div class="form-group">
+                            <label for="projectCode">Select Project</label>
+
+
+                            <select class="form-control" id="permission" name="permission"
+                                placeholder="Enter The ProjectName" [(ngModel)]="formAddTime.permission" required
+                                #permission="ngModel" (change)=getactivities()>
+                                <option *ngFor="let project of projectlist" value={{project.permission}}>
+                                    {{project.permission}}
+                                </option>
+
+
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="username">Select Activity</label>
+
+
+                            <select class="form-control" id="activitiesCode" name="activitiesCode"
+                                placeholder="Enter The activitiesname" [(ngModel)]="formAddTime.activitiesCode" required
+                                #activitiesCode="ngModel">
+                                <option *ngFor="let Activity of Activity" value={{Activity.permission}}>
+                                    {{Activity.permission}}</option>
+
+
+                            </select>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
